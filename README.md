@@ -1,34 +1,89 @@
-# AI Agent Architecture Patterns
+# Enterprise Agentic AI Design Patterns Playbook
 
-AI agents shift AI from passive text generators into active problem-solvers that reason, plan, and execute multi-step tasks independently.
+AI agents shift AI from passive text generators into active business problem-solvers that reason, plan, and execute multi-step workflows safely and reliably.
 
-> **Deterministic first, agentic where needed. Every pattern justified by the Scorecard.**
-
-Use a deterministic workflow when rules are known. Use a single agent + tools when interpretation is needed. Add RAG + memory when grounding is needed. Add multi-agent only when specialization improves measured outcomes. Run autonomous long-running agents only with durable state, budgets, verification, and stop controls.
-
-> What measurable improvement in task success, cycle time, reliability, or cost justifies adding another agent vs. keeping it simpler?
-
-## Evaluation Scorecard
-
-| Dimension | Metrics |
-|---|---|
-| Business value | Task completion, resolution rate, cycle time, CSAT |
-| Quality | Evidence-grounded rate, tool accuracy, correction rate |
-| Reliability | Success rate, timeouts, duplicate side-effects, recovery |
-| Performance | p50/p95 latency, time to first result |
-| Cost | Cost/task, tokens/task, tool calls/task |
-| Security | Unauthorized actions, data incidents, approval compliance |
-| Maintainability | Change-failure rate, regression escapes, MTTD, rollback time |
-
-Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
-
-## Adoption Sequence
-
-**P0: Safety + Tools → P1: Reasoning/Planning/Orchestration/Reliability → P2: RAG/Memory/Eval → P3: Multi-Agent → P4: Advanced**
+> **Golden Rule: Deterministic first, agentic where needed. Every pattern justified by the Scorecard.**
 
 ---
 
-## P0: Safety (must have)
+## Why This Playbook Exists
+
+Enterprise teams often jump straight to complex multi-agent swarms when a simple workflow or single tool-calling agent would deliver **higher accuracy at 1/10th the cost and latency**.
+
+This playbook provides engineering, product, and executive leaders with a **business-first decision framework** across the **12 Major Agentic AI Design Patterns**. Each pattern module includes:
+1. **Plain-English Analogy** — What the pattern is in 1–5 sentences.
+2. **Business Case & ROI** — What operational problem it solves and how it impacts the bottom line.
+3. **When to Use (Checklist + Architecture Diagram)** — Clear decision rules and visual flowcharts.
+4. **Scorecard & Go-Live Pass/Fail Criteria** — Concrete thresholds across **Accuracy, Cost, Latency, and Reliability / Business Value**.
+5. **Industry Use Cases (Retail, Banking, Healthcare)** — Real-world implementations with measurable KPIs.
+
+> **The Architect's Litmus Test:** *What measurable improvement in task completion, cycle time, reliability, or cost justifies adding a more complex pattern vs. keeping it simpler?*
+
+---
+
+## The 12 Major Agentic AI Design Patterns
+
+| # | Pattern Folder | Core Analogy | Primary Business Value | Complexity Tier |
+|---|---|---|---|---|
+| **01** | [01. Prompt Chaining](./01-prompt-chaining/) | Factory assembly line with quality stations | High predictability & compliance on repeatable multi-step tasks | Tier 1: Workflow |
+| **02** | [02. Routing](./02-routing/) | Smart hospital triage nurse / receptionist | Cuts AI spend 50–75% by matching request difficulty to the right specialist or model | Tier 1: Workflow |
+| **03** | [03. Parallelization (Fan-Out / Fan-In)](./03-parallelization/) | Formula 1 pit crew / panel of independent inspectors | Slashes wait times and catches blind spots via simultaneous analysis | Tier 1: Workflow |
+| **04** | [04. Tool Use & ReAct](./04-tool-use-react/) | Detective with live database access & calculator | Eliminates data hallucinations and executes real transactions via APIs/MCP | Tier 2: Single Agent |
+| **05** | [05. Planning (Plan-and-Execute)](./05-planning/) | Architect drafting a blueprint before laying bricks | Solves complex 5+ step goals with upfront previews and dynamic recovery | Tier 2: Single Agent |
+| **06** | [06. Reflection & Evaluator-Optimizer](./06-reflection-evaluator-optimizer/) | Writer paired with a strict chief editor | Catches 70–90% of first-draft errors against a rubric before human review | Tier 2: Single Agent |
+| **07** | [07. Multi-Agent Orchestrator & Handoffs](./07-multi-agent-orchestrator/) | General contractor managing licensed trade specialists | Scales across deep domains & security boundaries without prompt bloat | Tier 3: Multi-Agent |
+| **08** | [08. Agentic RAG & Deep Research](./08-agentic-rag-deep-research/) | Investigative journalist cross-checking sources | Delivers 100% cited, permission-filtered answers from internal & web data | Tier 2/3: Knowledge |
+| **09** | [09. Memory & Context Engineering](./09-memory-context-engineering/) | Concierge doctor's chart + clean working desk | Remembers user preferences across sessions while cutting token bloat 75%+ | Tier 2/3: State |
+| **10** | [10. Human-in-the-Loop & Governance](./10-human-in-the-loop-governance/) | Corporate expense approval limits by dollar tier | Automates 85%+ of routine work while gating high-risk actions behind 1-click sign-off | P0: Governance |
+| **11** | [11. Guardrails & Policy-as-Code](./11-guardrails-policy-as-code/) | Airport security scanners + building circuit breakers | Blocks prompt injections, PII leaks, and unauthorized spend in testable code | P0: Safety |
+| **12** | [12. Durable Execution & Computer Use](./12-durable-execution-computer-use/) | GPS-tracked freight train with universal track adapters | Survives crashes over multi-hour jobs and automates legacy "no-API" portals | Tier 4: Autonomous |
+
+---
+
+## Executive Decision Tree: Choosing the Right Pattern
+
+```mermaid
+flowchart TD
+    Start(["New Business Problem"]) --> Safety["Always Apply P0 Foundations:<br/>10. Human-in-the-Loop + 11. Guardrails"]
+    Safety --> Q1{"Are the steps fixed<br/>and predictable?"}
+    Q1 -- "Yes: Sequential" --> P1["01. Prompt Chaining"]
+    Q1 -- "Yes: Distinct Intents" --> P2["02. Routing"]
+    Q1 -- "Yes: Independent Subtasks" --> P3["03. Parallelization"]
+    Q1 -- "No: Needs Dynamic Decisions" --> Q2{"Single Domain or<br/>Multi-Domain?"}
+    Q2 -- "Single Agent + Live APIs" --> P4["04. Tool Use & ReAct"]
+    Q2 -- "5+ Dependent Milestones" --> P5["05. Planning"]
+    Q2 -- "Needs Strict Rubric Polish" --> P6["06. Reflection & Evaluator"]
+    Q2 -- "Needs Deep Document Research" --> P8["08. Agentic RAG & Deep Research"]
+    Q2 -- "Needs Cross-Session Continuity" --> P9["09. Memory & Context Eng."]
+    Q2 -- "Multiple Distinct Domains (>20 Tools)" --> P7["07. Multi-Agent Orchestrator"]
+    P5 --> Q3{"Long-Running or<br/>Legacy GUI (No API)?"}
+    P7 --> Q3
+    Q3 -- "Yes" --> P12["12. Durable Execution & Computer Use"]
+```
+
+---
+
+## Enterprise Evaluation Scorecard
+
+Before promoting any agent pattern to production—or upgrading from a simpler pattern to a more complex one—measure performance across these dimensions:
+
+| Dimension | Business & Operational Metrics |
+|---|---|
+| **Business Value** | Task completion rate, straight-through resolution rate, cycle-time reduction, CSAT, ROI |
+| **Accuracy & Quality** | Evidence-grounded citation rate, tool/schema accuracy, rubric pass rate, correction rate |
+| **Reliability** | End-to-end success rate, timeout recovery, zero duplicate side-effects (idempotency), rollback rate |
+| **Performance (Latency)** | p50/p95 response time, time to first progress update |
+| **Cost** | Cost per completed task (`\$`/task), tokens per task, tool calls per task (note: multi-agent fan-out grows $O(n)$ to $O(n^2)$) |
+| **Security & Governance** | Zero unauthorized actions, zero PII/PHI leaks, 100% high-risk approval compliance |
+| **Maintainability** | Change-failure rate, regression escapes, mean time to detect (MTTD), 1-click rollback time |
+
+---
+
+## Adoption Sequence & Architectural Reference Catalog
+
+**P0: Safety + Tools → P1: Reasoning / Planning / Orchestration / Reliability → P2: RAG / Memory / Eval → P3: Multi-Agent → P4: Advanced**
+
+### P0: Safety (Must Have — Patterns [10](./10-human-in-the-loop-governance/) & [11](./11-guardrails-policy-as-code/))
 
 - **Human-in-the-Loop** — Gate irreversible or high-risk actions behind explicit human approval.
   - Ref: [Constitutional AI, arXiv:2212.08073](https://arxiv.org/abs/2212.08073)
@@ -48,7 +103,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [Spotlighting, arXiv:2403.14720](https://arxiv.org/abs/2403.14720)
 - **Audit Trace** — Log every decision, tool call, and approval for replay and forensics.
 
-## P0: Tools
+### P0: Tools (Patterns [04](./04-tool-use-react/) & [12](./12-durable-execution-computer-use/))
 
 - **Tool Use** — Let the model call external APIs/functions to act and fetch facts.
   - Ref: [Toolformer, arXiv:2302.04761](https://arxiv.org/abs/2302.04761)
@@ -68,7 +123,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [Model Context Protocol spec](https://modelcontextprotocol.io)
   - Ref: [A2A Protocol spec](https://a2a-protocol.org)
 
-## P1: Core Reasoning
+### P1: Core Reasoning (Patterns [04](./04-tool-use-react/) & [06](./06-reflection-evaluator-optimizer/))
 
 - **ReAct** — Interleave reasoning with tool actions and observations.
   - Ref: [arXiv:2210.03629](https://arxiv.org/abs/2210.03629)
@@ -92,7 +147,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [arXiv:2308.09687](https://arxiv.org/abs/2308.09687)
 - **Evidence-Grounded + Stop-When-Sufficient + Ask-Before-Assuming** — Cite evidence, halt when enough, and clarify ambiguity instead of guessing.
 
-## P1: Planning
+### P1: Planning (Pattern [05](./05-planning/))
 
 - **Plan-and-Execute / Plan-and-Solve** — Plan first, then execute steps, replanning only on failure.
   - Ref: [Plan-and-Solve, arXiv:2305.04091](https://arxiv.org/abs/2305.04091)
@@ -108,7 +163,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
 - **Plan Validation + Precondition-Action-Postcondition + Draft-Preview-Approve-Commit** — Check feasibility before acting and preview before committing.
   - Ref: [SayCan, arXiv:2204.01691](https://arxiv.org/abs/2204.01691)
 
-## P1: Orchestration
+### P1: Orchestration (Patterns [01](./01-prompt-chaining/), [02](./02-routing/), [03](./03-parallelization/), [06](./06-reflection-evaluator-optimizer/), [07](./07-multi-agent-orchestrator/), [08](./08-agentic-rag-deep-research/), [12](./12-durable-execution-computer-use/))
 
 - **Deterministic Workflow with Agentic Steps** — Fixed control flow, with LLM judgment only inside bounded nodes.
   - Ref: [Anthropic, Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)
@@ -128,7 +183,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [MemGPT, arXiv:2310.08560](https://arxiv.org/abs/2310.08560)
 - **Saga / Compensation + Human Escalation** — Undo partial side-effects on failure and escalate to a human.
 
-## P1: Reliability
+### P1: Reliability (Patterns [02](./02-routing/), [11](./11-guardrails-policy-as-code/), [12](./12-durable-execution-computer-use/))
 
 - **Timeouts, Retry Classification, Backoff/Jitter, Circuit Breaker, Idempotency, Durable Replay, Health Checks** — Standard distributed-systems hygiene applied to agent loops.
 - **Hard Operational Budgets & Loop Breakers** — Enforce strict caps on steps, wall-clock time, token spend, and repeated identical tool calls to prevent runaway loops.
@@ -136,7 +191,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [FrugalGPT, arXiv:2305.05176](https://arxiv.org/abs/2305.05176)
   - Ref: [RouteLLM, arXiv:2406.18665](https://arxiv.org/abs/2406.18665)
 
-## P2: RAG & Memory
+### P2: RAG & Memory (Patterns [08](./08-agentic-rag-deep-research/) & [09](./09-memory-context-engineering/))
 
 - **RAG** — Ground generation in retrieved documents.
   - Ref: [arXiv:2005.11401](https://arxiv.org/abs/2005.11401)
@@ -165,7 +220,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
 - **Skill Library** — Store verified, reusable procedures the agent can retrieve and compose.
   - Ref: [Voyager, arXiv:2305.16291](https://arxiv.org/abs/2305.16291)
 
-## P2: Evaluation
+### P2: Evaluation (Applied Across All 12 Patterns)
 
 - **Golden Tasks + Trace-Based Eval + Deterministic Verification** — Regression-test agents on fixed tasks, scoring trajectories and outcomes across multi-turn tool and environment interactions.
   - Ref: [SWE-bench, arXiv:2310.06770](https://arxiv.org/abs/2310.06770)
@@ -177,7 +232,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [MT-Bench / LLM-as-a-Judge, arXiv:2306.05685](https://arxiv.org/abs/2306.05685)
 - **Shadow / Canary + Versioning** — Roll out prompt, model, and tool changes gradually with fast rollback.
 
-## P3: Multi-Agent (ONLY IF SCORECARD JUSTIFIES)
+### P3: Multi-Agent (ONLY IF SCORECARD JUSTIFIES — Pattern [07](./07-multi-agent-orchestrator/))
 
 - **Supervisor + Delegation with Typed Contracts** — Specialists receive typed tasks and return typed, verifiable results.
   - Ref: [Magentic-One, arXiv:2411.04468](https://arxiv.org/abs/2411.04468)
@@ -196,7 +251,7 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
   - Ref: [Why Do Multi-Agent LLM Systems Fail? (MAST), arXiv:2503.13657](https://arxiv.org/abs/2503.13657)
 - **Avoid:** Peer-to-Peer / Blackboard / Group Collaboration (poor auditability).
 
-## P4: Advanced (ONLY AFTER P0–P3)
+### P4: Advanced (ONLY AFTER P0–P3)
 
 - Memory consolidation, adaptive RAG, compute-optimal multi-agent test-time scaling, and MoA only with measured business value.
 
@@ -229,4 +284,3 @@ Fan-out cost grows O(n) to O(n²) depending on topology. Measure actuals.
 - **Google ADK (Agent Development Kit)** — [docs](https://google.github.io/adk-docs/)
 - **CrewAI** — [docs](https://docs.crewai.com/) (no arXiv)
 - **LangGraph** — [docs](https://langchain-ai.github.io/langgraph/)
-
