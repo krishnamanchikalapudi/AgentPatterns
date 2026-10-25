@@ -76,20 +76,35 @@ flowchart TD
     Q3 -- "Yes" --> P12["12. Durable Execution & Computer Use"]
 ```
 
-#### Enterprise Evaluation Scorecard
+## Enterprise Evaluation Scorecard
 
 Before promoting any agent pattern to production—or upgrading from a simpler pattern to a more complex one—measure performance across these dimensions:
 
-| Dimension | Business & Operational Metrics |
-|---|---|
-| **Business Value** | Task completion rate, straight-through resolution rate, cycle-time reduction, CSAT, ROI |
-| **Accuracy & Quality** | Evidence-grounded citation rate, tool/schema accuracy, rubric pass rate, correction rate |
-| **Reliability** | End-to-end success rate, timeout recovery, zero duplicate side-effects (idempotency), rollback rate |
-| **Performance (Latency)** | p50/p95 response time, time to first progress update |
-| **Cost** | Cost per completed task (`\$`/task), tokens per task, tool calls per task (note: multi-agent fan-out grows $O(n)$ to $O(n^2)$) |
-| **Security & Governance** | Zero unauthorized actions, zero PII/PHI leaks, 100% high-risk approval compliance |
-| **Maintainability** | Change-failure rate, regression escapes, mean time to detect (MTTD), 1-click rollback time |
+| Dimension | Business & Operational Metrics | Target Production Benchmark |
+|---|---|---|
+| **Business Value** | Task completion rate, straight-through resolution rate, cycle-time reduction, CSAT, ROI | ≥ 85% straight-through resolution; measurable ROI > 3x implementation cost |
+| **Accuracy & Quality** | Evidence-grounded citation rate, tool/schema accuracy, rubric pass rate, correction rate | ≥ 98% schema & tool validity; 0 ungrounded claims in regulated paths |
+| **Reliability** | End-to-end success rate, timeout recovery, zero duplicate side-effects (idempotency), rollback rate | 100% idempotent mutations; ≥ 99.5% completion on retried runs |
+| **Performance (Latency)** | p50/p95 response time, time to first progress update | p95 ≤ 3.5s (interactive); immediate initial streaming progress token |
+| **Cost** | Cost per completed task (`\$`/task), tokens per task, tool calls per task | Bounded token spend; fan-out multipliers strictly capped ($n \le 5$) |
+| **Security & Governance** | Zero unauthorized actions, zero PII/PHI leaks, 100% high-risk approval compliance | 100% gated human sign-off on Tier-3 actions; 0 prompt injection breaches |
+| **Maintainability** | Change-failure rate, regression escapes, mean time to detect (MTTD), 1-click rollback time | MTTD < 5 min via trace observability; < 1 min zero-downtime rollback |
 
+---
+
+
+## 52-Week Enterprise Implementation Curriculum
+
+This systematic 52-week curriculum guides enterprise architecture, data, and platform teams through a structured journey from basic deterministic outputs to full autonomous production control planes.
+
+```mermaid
+timeline
+    title 52-Week Enterprise Agentic AI Roadmap
+    Quarter 1 (Weeks 01-13) : Foundations, Tool Calling & Model Context Protocol (MCP) : Deterministic Outputs : Native Tools : MCP Server/Client
+    Quarter 2 (Weeks 14-26) : Agentic RAG, Knowledge Graphs & Enterprise Memory : CRAG & Self-RAG : GraphRAG : Temporal & Episodic Memory
+    Quarter 3 (Weeks 27-39) : Multi-Agent Systems & Enterprise Orchestration : Prompt Chaining : Supervisor Graphs : Agent-to-Agent (A2A) Protocols
+    Quarter 4 (Weeks 40-52) : Guardrails, FinOps, Evaluation & Production Scale : Dual Guardrails : LLM-as-a-Judge : Durable Checkpoints & Control Plane
+```
 
 ### Foundations, Tool Use & Model Context Protocol (MCP)
 
@@ -108,7 +123,6 @@ Before promoting any agent pattern to production—or upgrading from a simpler p
 | **11** | **Healthcare** | Legacy EHR silos block safe AI access; wrapping patient vitals and allergies in MCP standardizes clinical tool interoperability. | Clinical Data Interoperability, Standardized Tool Exposure, Drug-Allergy Checking | Model Context Protocol (MCP) Server (`stdio`) |
 | **12** | **Retail** | Disconnected inventory databases and vendor files delay reorders; an MCP Host bridges SQLite stock and file systems automatically. | Automated Inventory Replenishment, Purchase Order Drafting, Multi-System Orchestration | Dynamic Multi-Server MCP Client Host |
 | **13** | **FinTech** | Preparing AML Suspicious Activity Reports takes 3 hours per alert; unifying MCP ledgers and web screening cuts prep to 3 minutes. | AML Case Investigation, Adverse Media Screening, Regulatory SAR Filing | Composite Tool + Grounding + Schema Copilot |
-
 
 ### Agentic RAG, Knowledge Graphs & Enterprise Memory
 
